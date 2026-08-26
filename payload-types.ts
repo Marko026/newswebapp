@@ -271,6 +271,12 @@ export interface Media {
   id: number;
   alt: string;
   caption?: string | null;
+  provider?: ('payload' | 'cloudinary') | null;
+  cloudinaryPublicId?: string | null;
+  cloudinarySecureUrl?: string | null;
+  cloudinaryResourceType?: ('image' | 'video') | null;
+  cloudinaryBytes?: number | null;
+  cloudinaryDuration?: number | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -710,6 +716,12 @@ export interface AuthorsSelect<T extends boolean = true> {
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
   caption?: T;
+  provider?: T;
+  cloudinaryPublicId?: T;
+  cloudinarySecureUrl?: T;
+  cloudinaryResourceType?: T;
+  cloudinaryBytes?: T;
+  cloudinaryDuration?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;

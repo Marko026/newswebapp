@@ -1,0 +1,4 @@
+interface:
+  display_name: "Award Frontend Expert"
+  short_description: "Audit and polish award-level responsive websites"
+  default_prompt: "Use $award-frontend-expert to audit and polish this frontend to award-level quality."

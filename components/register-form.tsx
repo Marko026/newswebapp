@@ -1,6 +1,9 @@
 "use client";
 
 import { FormEvent, useId, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 type FormStatus = "idle" | "loading" | "success" | "error";
 
@@ -36,15 +39,15 @@ export function RegisterForm({ locale }: { locale: "ar" | "en" }) {
       <span className="form-step">01 / 03</span>
       <p>{arabic ? "بياناتك الأساسية" : "Your details"}</p>
     </div>
-    <label htmlFor={nameId}>{arabic ? "الاسم الكامل" : "Full name"}<input id={nameId} name="name" required maxLength={120} autoComplete="name" /></label>
-    <label htmlFor={emailId}>{arabic ? "البريد الإلكتروني" : "Email address"}<input id={emailId} name="email" type="email" required maxLength={254} autoComplete="email" /></label>
+    <Label htmlFor={nameId}>{arabic ? "الاسم الكامل" : "Full name"}<Input id={nameId} name="name" required maxLength={120} autoComplete="name" /></Label>
+    <Label htmlFor={emailId}>{arabic ? "البريد الإلكتروني" : "Email address"}<Input id={emailId} name="email" type="email" required maxLength={254} autoComplete="email" /></Label>
     <div className="form-field-note">{arabic ? "ستستخدم هذا البريد لتسجيل الدخول بعد الموافقة." : "We’ll use this email for sign-in once your request is approved."}</div>
-    <label htmlFor={passwordId}>{arabic ? "كلمة المرور" : "Password"}<input id={passwordId} name="password" type="password" minLength={12} required autoComplete="new-password" aria-describedby={`${passwordId}-hint`} /></label>
+    <Label htmlFor={passwordId}>{arabic ? "كلمة المرور" : "Password"}<Input id={passwordId} name="password" type="password" minLength={12} required autoComplete="new-password" aria-describedby={`${passwordId}-hint`} /></Label>
     <div id={`${passwordId}-hint`} className="form-field-note">{arabic ? "12 حرفاً على الأقل." : "At least 12 characters."}</div>
-    <button className="access-request-submit" type="submit" disabled={isLoading} aria-disabled={isLoading}>
+    <Button className="access-request-submit" type="submit" disabled={isLoading} aria-disabled={isLoading}>
       <span>{isLoading ? (arabic ? "جاري الإرسال" : "Sending request") : arabic ? "إرسال طلب الوصول" : "Request access"}</span>
-      {isLoading ? <span className="form-spinner" aria-hidden="true" /> : <span className="submit-arrow" aria-hidden="true">↗</span>}
-    </button>
+      {isLoading && <span className="form-spinner" aria-hidden="true" />}
+    </Button>
     {message && <p className={status === "error" ? "form-error" : "form-success"} role={status === "error" ? "alert" : "status"} aria-live="polite">{message}</p>}
   </form>;
 }

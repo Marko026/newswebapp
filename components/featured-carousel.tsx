@@ -1,13 +1,10 @@
 "use client";
 
-import Link from "next/link";
+import { InteractiveButtonLink } from "@/components/interactive-button-link";
 import { useEffect, useRef, useState } from "react";
 import { localizedPath, type Locale } from "@/lib/i18n";
 import type { Story } from "@/lib/content";
-
-/* Payload media URLs may be remote or tenant-configured; use native img until
- * the deployment-specific Next image loader is configured. */
-/* eslint-disable @next/next/no-img-element */
+import { CloudinaryImage } from "@/components/cloudinary-image";
 
 export function FeaturedCarousel({ stories, locale }: { stories: Story[]; locale: Locale }) {
   const [active, setActive] = useState(0);
@@ -99,9 +96,6 @@ export function FeaturedCarousel({ stories, locale }: { stories: Story[]; locale
     suppressClick.current = false;
   }
 
-  const previousIcon = locale === "ar" ? "→" : "←";
-  const nextIcon = locale === "ar" ? "←" : "→";
-
   return <section className="featured-carousel" role="region" aria-roledescription="carousel" aria-label={locale === "ar" ? "الأخبار المختارة" : "Featured stories"} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} onFocus={() => setFocused(true)} onBlur={(event) => { if (!event.currentTarget.contains(event.relatedTarget as Node)) setFocused(false); }}>
     <div className="featured-lead">
       <div>
@@ -112,23 +106,18 @@ export function FeaturedCarousel({ stories, locale }: { stories: Story[]; locale
     </div>
     <div className={`carousel-slides${dragging ? " is-dragging" : ""}`} aria-live={isPlaying ? "off" : "polite"} tabIndex={0} onKeyDown={handleKeyDown} onPointerDown={handlePointerDown} onPointerMove={handlePointerMove} onPointerUp={handlePointerUp} onPointerCancel={handlePointerUp} onClickCapture={handleClickCapture}>
       {stories.map((story, index) => <article key={story.slug} id={`featured-slide-${index}`} className={`carousel-slide ${index === active ? "is-active" : ""}`} role="group" aria-hidden={index !== active} aria-roledescription="slide" aria-label={`${labels.slide} ${index + 1} of ${stories.length}`}>
-        <div className={`story-art hero-art art-${story.art}`}>{story.coverImage ? <img className="story-art-media" src={story.coverImage.url} alt={story.coverImage.alt || story.title[locale]} width={story.coverImage.width} height={story.coverImage.height} /> : <span>{story.artLabel}</span>}<span className="hero-index">0{index + 1} / 0{stories.length}</span></div>
+        <div className={`story-art hero-art art-${story.art}`}>{story.coverImage ? <CloudinaryImage className="story-art-media" src={story.coverImage.url} alt={story.coverImage.alt || story.title[locale]} width={story.coverImage.width || 1800} height={story.coverImage.height || 1200} sizes="(max-width: 720px) 100vw, 55vw" fetchPriority={index === 0 ? "high" : "auto"} loading={index === 0 ? "eager" : "lazy"} /> : <span>{story.artLabel}</span>}<span className="hero-index">0{index + 1} / 0{stories.length}</span></div>
         <div className="hero-copy">
           <div className="hero-copy-main">
             <div className="hero-copy-meta"><p className="eyebrow">{story.category[locale]}</p><span>{locale === "ar" ? "مختار" : "Featured"}</span></div>
             <h1>{story.title[locale]}</h1>
             <p>{story.excerpt[locale]}</p>
-            <Link tabIndex={index === active ? 0 : -1} className="button-link" href={localizedPath(locale, `/news/${story.slug}`)}>{locale === "ar" ? "اقرأ القصة" : "Read the story"}<span>↗</span></Link>
+            <InteractiveButtonLink tabIndex={index === active ? 0 : -1} href={localizedPath(locale, `/news/${story.slug}`)}>{locale === "ar" ? "اقرأ القصة" : "Read the story"}</InteractiveButtonLink>
           </div>
           {index === active && <div className="hero-navigation" aria-label={labels.choose}>
             <div className="hero-progress" role="group" aria-label={labels.choose}>
               {stories.map((item, itemIndex) => <button key={item.slug} type="button" className={`hero-progress-step${itemIndex === active ? " is-active" : ""}`} aria-pressed={itemIndex === active} aria-label={`${labels.slide} ${itemIndex + 1}`} onPointerDown={(event) => event.stopPropagation()} onClick={() => selectStory(itemIndex)} onKeyDown={(event) => handlePickerKeyDown(event, itemIndex)} />)}
               <span className="hero-count">0{active + 1} / 0{stories.length}</span>
-            </div>
-            <div className="hero-navigation-actions">
-              <button className="story-nav-button" type="button" onPointerDown={(event) => event.stopPropagation()} onClick={() => move(-1)} aria-label={labels.previous}>{previousIcon}</button>
-              <button className="story-nav-button" type="button" onPointerDown={(event) => event.stopPropagation()} onClick={() => move(1)} aria-label={labels.next}>{nextIcon}</button>
-              <button className="story-nav-button story-nav-pause" type="button" onPointerDown={(event) => event.stopPropagation()} onClick={() => setPausedByUser((value) => !value)} aria-label={pausedByUser ? labels.play : labels.pause}>{pausedByUser ? "▶" : "Ⅱ"}</button>
             </div>
           </div>}
         </div>

@@ -18,6 +18,8 @@ export function assertRuntimeEnvironment() {
   if (!process.env.UPSTASH_REDIS_REST_URL) missing.push("UPSTASH_REDIS_REST_URL");
   if (!process.env.UPSTASH_REDIS_REST_TOKEN) missing.push("UPSTASH_REDIS_REST_TOKEN");
   if (process.env.MFA_REQUIRED === "true" && (!process.env.MFA_ENCRYPTION_KEY || process.env.MFA_ENCRYPTION_KEY.length < 32)) missing.push("MFA_ENCRYPTION_KEY (at least 32 characters when MFA_REQUIRED=true)");
+  const cloudinaryValues = [process.env.CLOUDINARY_CLOUD_NAME, process.env.CLOUDINARY_API_KEY, process.env.CLOUDINARY_API_SECRET, process.env.CLOUDINARY_IMAGE_UPLOAD_PRESET, process.env.CLOUDINARY_VIDEO_UPLOAD_PRESET];
+  if (cloudinaryValues.some((value) => !value?.trim())) missing.push("Cloudinary credentials and image/video upload presets");
 
   if (missing.length > 0) {
     throw new Error(`Production environment is not configured: ${missing.join(", ")}`);

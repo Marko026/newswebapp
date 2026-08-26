@@ -45,6 +45,9 @@ const database = databaseDriver === "postgres"
       client: { url: process.env.SQLITE_DATABASE_URL || "file:./payload.db" },
       wal: true,
       busyTimeout: 5000,
+      // Public development must never block on an interactive schema-push
+      // warning. Apply migrations explicitly when changing the local CMS schema.
+      push: false,
     });
 
 export default buildConfig({
@@ -52,9 +55,15 @@ export default buildConfig({
   // deliberately idempotent and runs before the admin is served, so legacy
   // owners can open drafts and article permissions stay consistent.
   onInit: async (payload) => {
-    const legacyOwners = await payload.find({ collection: "users", where: { and: [{ role: { equals: "owner" } }, { status: { exists: false } }] }, limit: 100, pagination: false, overrideAccess: true });
-    for (const owner of legacyOwners.docs) {
-      await payload.update({ collection: "users", id: owner.id, data: { status: "approved" }, overrideAccess: true, context: { legacyOwnerMigration: true } });
+    try {
+      const legacyOwners = await payload.find({ collection: "users", where: { and: [{ role: { equals: "owner" } }, { status: { exists: false } }] }, limit: 100, pagination: false, overrideAccess: true });
+      for (const owner of legacyOwners.docs) {
+        await payload.update({ collection: "users", id: owner.id, data: { status: "approved" }, overrideAccess: true, context: { legacyOwnerMigration: true } });
+      }
+    } catch (error) {
+      // A stale local schema must not prevent the public site from rendering.
+      // The explicit migration command remains responsible for schema changes.
+      payload.logger.warn({ err: error }, "Skipping legacy owner normalization until the local schema is migrated.");
     }
   },
   admin: {

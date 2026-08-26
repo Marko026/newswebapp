@@ -17,13 +17,14 @@ export default async function SearchPage({
   const matches = q ? await searchStories(locale, q) : [];
 
   return (
-    <main className="page-wrap subpage">
+    <main className="page-wrap subpage search-page">
       <div className="subpage-heading">
         <p className="eyebrow">{ui[locale].search}</p>
         <h1>{locale === "ar" ? "ابحث في الأرشيف" : "Search the archive"}</h1>
-        <form className="search-form">
+        <p className="search-lede">{locale === "ar" ? "اعثر على القصص والسياق والموضوعات في الأرشيف." : "Find stories, context, and subjects across the archive."}</p>
+        <form className="search-form" role="search">
           <input name="q" defaultValue={q} placeholder={locale === "ar" ? "اكتب كلمة أو موضوعاً" : "Search a word or topic"} aria-label={ui[locale].search} />
-          <button type="submit">⌕</button>
+          <button className="edge-control" type="submit" aria-label={locale === "ar" ? "تنفيذ البحث" : "Submit search"}><span className="edge-control__corner" aria-hidden="true" /><span className="edge-control__content" aria-hidden="true">⌕</span></button>
         </form>
       </div>
       {q ? (

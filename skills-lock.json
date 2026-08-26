@@ -1,6 +1,12 @@
 {
   "version": 1,
   "skills": {
+    "gauntlet-loop": {
+      "source": "NicholasSpisak/gauntlet-loop",
+      "sourceType": "github",
+      "skillPath": "skills/gauntlet-loop/SKILL.md",
+      "computedHash": "21b5af7f7c9b3a0718b07a45fc45d704b7ac8a029b7f841aeaf184468f095a25"
+    },
     "hallmark": {
       "source": "nutlope/hallmark",
       "sourceType": "github",

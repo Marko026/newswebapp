@@ -1,0 +1,4 @@
+interface:
+  display_name: Aura Design Guide
+  short_description: Aura-informed web and app design with anti-slop proof
+  default_prompt: Use $aura-design-guide to design or refine this frontend as an original, product-specific experience with a clear visual thesis, contextual media, purposeful motion, complete app states, and an evidence-based anti-slop review.

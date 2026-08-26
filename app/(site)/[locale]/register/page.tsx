@@ -8,7 +8,7 @@ export default async function RegisterPage({ params }: { params: Promise<{ local
   return <main className="page-wrap subpage access-request-page" dir={arabic ? "rtl" : "ltr"}>
     <div className="access-request-grid">
     <div className="subpage-heading">
-      <p className="eyebrow">{arabic ? "Pristup adminu" : "Admin access"}</p>
+      <p className="eyebrow">{arabic ? "الوصول إلى الإدارة" : "Admin access"}</p>
       <h1>{arabic ? "انضم إلى غرفة الأخبار" : "Join the newsroom"}</h1>
       <p className="subpage-lede">{arabic ? "كل حساب بعد حساب المالك يحتاج إلى موافقة المالك." : "Every account after the owner must be approved by the owner."}</p>
     </div>

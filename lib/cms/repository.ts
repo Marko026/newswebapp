@@ -23,6 +23,7 @@ type LexicalNode = {
 
 type PayloadMedia = {
   url?: string | null;
+  cloudinarySecureUrl?: string | null;
   alt?: string | null;
   width?: number | null;
   height?: number | null;
@@ -53,6 +54,20 @@ type PayloadArticle = {
 const getPayloadClient = cache(async () => getPayload({ config }));
 const shouldPropagateCmsError = () => process.env.NODE_ENV === "production" && process.env.NEXT_PHASE !== "phase-production-build";
 const canQueryCmsDuringBuild = process.env.CMS_BUILD_DATA === "true";
+const cmsReadTimeoutMs = 1800;
+
+async function withCmsReadTimeout<T>(operation: Promise<T>): Promise<T> {
+  let timeoutId: ReturnType<typeof setTimeout> | undefined;
+  const timeout = new Promise<never>((_, reject) => {
+    timeoutId = setTimeout(() => reject(new Error(`CMS read timed out after ${cmsReadTimeoutMs}ms`)), cmsReadTimeoutMs);
+  });
+
+  try {
+    return await Promise.race([operation, timeout]);
+  } finally {
+    if (timeoutId) clearTimeout(timeoutId);
+  }
+}
 const fallbackTopics = (): CmsTopic[] => {
   const labels: Record<string, Record<Locale, string>> = {
     egypt: { ar: "مصر", en: "Egypt" },
@@ -98,9 +113,10 @@ function lexicalParagraphs(body: PayloadArticle["body"]): string[] {
 function mediaFromPayload(value: PayloadArticle["coverImage"] | PayloadAuthor["avatar"]): StoryMedia | undefined {
   if (!value || typeof value !== "object") return undefined;
   const media = value as PayloadMedia;
-  if (!media.url) return undefined;
+  const url = media.cloudinarySecureUrl || media.url;
+  if (!url) return undefined;
   return {
-    url: media.url,
+    url,
     alt: media.alt || "",
     ...(media.width ? { width: media.width } : {}),
     ...(media.height ? { height: media.height } : {}),
@@ -168,8 +184,8 @@ function mapArticle(article: PayloadArticle, locale: Locale, index: number): Cms
 async function findPublishedArticles(locale: Locale, where?: Where): Promise<PayloadArticle[]> {
   if (process.env.NEXT_PHASE === "phase-production-build" && !canQueryCmsDuringBuild) return [];
   try {
-    const payload = await getPayloadClient();
-    const result = await payload.find({
+    const payload = await withCmsReadTimeout(getPayloadClient());
+    const result = await withCmsReadTimeout(payload.find({
       collection: "articles",
       locale,
       fallbackLocale: "en",
@@ -177,7 +193,7 @@ async function findPublishedArticles(locale: Locale, where?: Where): Promise<Pay
       limit: 100,
       sort: "-publishedAt",
       where: { _status: { equals: "published" }, ...(where || {}) },
-    });
+    }));
     return result.docs as unknown as PayloadArticle[];
   } catch (error) {
     // A local checkout can be used before a CMS database is initialized. In a
@@ -214,8 +230,8 @@ export async function getRelatedStories(locale: Locale, story: Story): Promise<C
 export async function getTopics(locale: Locale): Promise<CmsTopic[]> {
   if (process.env.NEXT_PHASE === "phase-production-build" && !canQueryCmsDuringBuild) return fallbackTopics();
   try {
-    const payload = await getPayloadClient();
-    const result = await payload.find({ collection: "topics", locale, fallbackLocale: "en", depth: 0, limit: 200, sort: "name" });
+    const payload = await withCmsReadTimeout(getPayloadClient());
+    const result = await withCmsReadTimeout(payload.find({ collection: "topics", locale, fallbackLocale: "en", depth: 0, limit: 200, sort: "name" }));
     if (result.docs.length) {
       return (result.docs as unknown as PayloadTopic[]).map((topic) => ({ id: topic.id, slug: topic.slug, name: localizedRecord(topic.name, locale) }));
     }
@@ -237,7 +253,7 @@ export async function getAuthors(locale: Locale): Promise<CmsAuthor[]> {
     return names.map((name) => ({ slug: slugify(name), name: { ar: fallbackStories.find((s) => s.author.en === name)?.author.ar || name, en: name } }));
   }
   try {
-    const payload = await getPayloadClient();
+    const payload = await withCmsReadTimeout(getPayloadClient());
     const result = await payload.find({ collection: "authors", locale, fallbackLocale: "en", depth: 1, limit: 200, sort: "name" });
     if (result.docs.length) {
       return (result.docs as unknown as PayloadAuthor[]).map((author) => {
