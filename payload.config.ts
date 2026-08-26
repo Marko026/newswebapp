@@ -18,6 +18,7 @@ import { NewsletterSubscribers } from "./collections/NewsletterSubscribers";
 import { Topics } from "./collections/Topics";
 import { Users } from "./collections/Users";
 import { assertRuntimeEnvironment } from "./lib/env";
+import { migrations } from "./migrations";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -38,9 +39,7 @@ if (databaseDriver === "postgres" && !process.env.DATABASE_URL) {
 const database = databaseDriver === "postgres"
   ? postgresAdapter({
       pool: { connectionString: process.env.DATABASE_URL },
-      // Temporary staging bootstrap for an empty Neon database. Turn this
-      // back off immediately after the first successful deployment.
-      push: process.env.PAYLOAD_DB_PUSH === "true",
+      prodMigrations: migrations,
     })
   : sqliteAdapter({
       client: { url: process.env.SQLITE_DATABASE_URL || "file:./payload.db" },

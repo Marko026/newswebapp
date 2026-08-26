@@ -14,9 +14,8 @@ restore drill by itself, so these checks are release gates.
 - Prvi nalog se kreira kroz Payload `/admin` i automatski postaje odobreni
   owner. Korisnike ne unositi ručno direktno u SQL bazu.
 
-For an empty private staging database only, set `PAYLOAD_DB_PUSH=true` for one
-deployment so Payload creates its schema, then set it back to `false` and
-redeploy. Do not keep schema push enabled for production changes.
+The repository contains the initial PostgreSQL migration. On deployment,
+Payload applies pending migrations before serving the admin or API.
 
 ## Cloudflare/WAF policy
 
