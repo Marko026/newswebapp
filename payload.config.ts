@@ -36,7 +36,12 @@ if (databaseDriver === "postgres" && !process.env.DATABASE_URL) {
 }
 
 const database = databaseDriver === "postgres"
-  ? postgresAdapter({ pool: { connectionString: process.env.DATABASE_URL } })
+  ? postgresAdapter({
+      pool: { connectionString: process.env.DATABASE_URL },
+      // Temporary staging bootstrap for an empty Neon database. Turn this
+      // back off immediately after the first successful deployment.
+      push: process.env.PAYLOAD_DB_PUSH === "true",
+    })
   : sqliteAdapter({
       client: { url: process.env.SQLITE_DATABASE_URL || "file:./payload.db" },
       wal: true,
