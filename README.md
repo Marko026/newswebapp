@@ -25,12 +25,6 @@ Pri prvom pokretanju Payload prikazuje `/admin/create-first-user`. Taj prvi nalo
 
 Za production first-owner setup ne ostavljaj javno otvorenim: privremeno postavi `ALLOW_FIRST_USER_SETUP=true` samo tokom privatnog provisioning prozora, kreiraj ownera, zatim promenljivu vrati na `false` i redeployuj.
 
-## Manualni pristup adminu
-
-Na admin login ekranu postoji `Register` link. Prvi nalog se kreira kroz Payload first-user ekran i postaje `owner`. Svaka sledeća javna registracija kreira korisnika sa statusom `pending`; owner u `Users` kolekciji postavlja status `approved` ili `suspended`. Pending i suspended korisnici ne mogu da se prijave. Kada su `GOOGLE_OIDC_CLIENT_ID`, `GOOGLE_OIDC_CLIENT_SECRET` i `GOOGLE_OIDC_REDIRECT_URI` podešeni, login prikazuje Google opciju; Google identitet se vezuje za već odobren lokalni nalog, a samo email podudaranje nikad samo po sebi ne odobrava pristup.
-
-Pri prvom otvaranju `/admin` kreira se prvi Payload korisnik. Lokalni SQLite fajl se čuva kao `payload.db` i ne zahteva Docker. Za production postavi `DB_DRIVER=postgres`, `DATABASE_URL` na managed PostgreSQL i koristi trajni S3/R2 storage. Bez `S3_BUCKET` lokalni upload radi na development filesystemu; sa S3/R2 promenljivama upload se prebacuje na trajni storage.
-
 ## Provere
 
 ```powershell
