@@ -56,7 +56,7 @@ html[data-theme="dark"] {
   --color-controls: oklch(14% 0.035 145);
   --color-controls-ink: oklch(92% 0.028 88);
   --color-controls-line: oklch(42% 0.045 145);
-  --color-focus: oklch(75% 0.11 88);
+  --color-focus: oklch(75% 0.11 245);
   --color-art-dark: oklch(22% 0.04 145);
   --color-art-mid: oklch(35% 0.05 115);
   --color-art-light: oklch(51% 0.055 92);
