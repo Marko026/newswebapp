@@ -231,7 +231,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{
 .form-intro-row p{margin:0;color:var(--color-ink);font:600 var(--text-md) var(--font-display)}
 .form-step{color:var(--color-accent);font:var(--text-xs) var(--font-mono);letter-spacing:.08em}
 .access-request-form label{gap:var(--space-2);color:var(--color-ink);font-size:var(--text-sm);letter-spacing:.01em}
-.access-request-form input{border:1px solid var(--color-line);background:var(--color-paper);padding:14px 15px;min-height:52px;font:var(--text-base) var(--font-body);transition:border-color var(--dur-fast) var(--ease-out),box-shadow var(--dur-fast) var(--ease-out),background-color var(--dur-fast) var(--ease-out)}
+.access-request-form input{border:1px solid var(--color-line);background:var(--color-paper);padding:var(--space-3) var(--space-4);min-height:52px;font:var(--text-base) var(--font-body);transition:border-color var(--dur-fast) var(--ease-out),box-shadow var(--dur-fast) var(--ease-out),background-color var(--dur-fast) var(--ease-out)}
 .access-request-form input:hover{border-color:var(--color-muted)}
 .access-request-form input:focus-visible{outline:2px solid var(--color-focus);outline-offset:3px;border-color:var(--color-focus);box-shadow:0 0 0 5px color-mix(in oklch,var(--color-focus) 15%,transparent);background:var(--color-paper-raised)}
 .access-request-form input:invalid:not(:placeholder-shown){border-color:var(--color-accent)}
@@ -239,7 +239,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{
 .access-request-submit{display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);width:100%;min-height:56px;border:1px solid var(--color-accent-dark);background:var(--color-accent-dark);color:var(--color-accent-ink);padding:var(--space-3) var(--space-4);cursor:pointer;font:600 var(--text-sm) var(--font-body);transition:transform var(--dur-fast) var(--ease-out),background-color var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out),opacity var(--dur-fast) var(--ease-out);touch-action:manipulation}
 .access-request-submit:hover{background:var(--color-accent);border-color:var(--color-accent);transform:translateY(-2px)}
 .access-request-submit:active{transform:translateY(0)}
-.access-request-submit:disabled{cursor:wait;opacity:.72;transform:none}
+.access-request-submit:disabled{cursor:not-allowed;opacity:.55;transform:none}
 .access-request-submit:focus-visible{outline:3px solid var(--color-focus);outline-offset:4px}
 .submit-arrow{font:var(--text-lg) var(--font-mono);transition:transform var(--dur-fast) var(--ease-out)}
 .access-request-submit:hover .submit-arrow{transform:translate(3px,-3px)}
