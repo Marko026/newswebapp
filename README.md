@@ -23,7 +23,7 @@ CMS:
 
 Pri prvom pokretanju Payload prikazuje `/admin/create-first-user`. Taj prvi nalog se automatski postavlja kao `owner`; svi kasniji nalozi ostaju `editor` dok ih owner ručno ne kreira ili odobri kroz workflow.
 
-Za production first-owner setup ne ostavljaj javno otvorenim: privremeno postavi `ALLOW_FIRST_USER_SETUP=true` samo tokom privatnog provisioning prozora, kreiraj ownera, zatim promenljivu vrati na `false` i redeployuj.
+Prvi nalog se kreira kroz Payload `/admin` i automatski postaje odobreni `owner`. Nakon prijave owner u kolekciji `Users` pravi `admin` nalog i odobrava ostale zahteve. Korisnike ne unositi ručno direktno u Neon bazu.
 
 ## Provere
 

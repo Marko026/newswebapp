@@ -70,8 +70,8 @@ test("first Payload user bootstraps as owner", async () => {
   assert.match(users, /operation === "create"/);
   assert.match(users, /existing\.docs\.length === 0/);
   assert.match(users, /role: "owner"/);
-  assert.match(users, /ALLOW_FIRST_USER_SETUP/);
   assert.match(users, /bootstrapClaim: "singleton"/);
+  assert.match(users, /role: "owner", status: "approved"/);
   assert.match(users, /unique: true/);
 });
 

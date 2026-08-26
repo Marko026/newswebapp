@@ -11,7 +11,8 @@ restore drill by itself, so these checks are release gates.
 - Set `DB_DRIVER=postgres` and a managed `DATABASE_URL`.
 - Set `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN`.
 - Set `MFA_ENCRYPTION_KEY` before enabling `MFA_REQUIRED=true`.
-- Keep `ALLOW_FIRST_USER_SETUP=false` after the private owner provisioning window.
+- Prvi nalog se kreira kroz Payload `/admin` i automatski postaje odobreni
+  owner. Korisnike ne unositi ručno direktno u SQL bazu.
 
 ## Cloudflare/WAF policy
 

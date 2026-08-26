@@ -32,9 +32,9 @@ export const Users: CollectionConfig = {
     beforeChange: [async ({ data, operation, req, originalDoc }) => {
       if (operation === "create") {
         const existing = await req.payload.find({ collection: "users", limit: 1, pagination: false, overrideAccess: true, req });
-        if (existing.docs.length === 0 && process.env.NODE_ENV === "production" && process.env.ALLOW_FIRST_USER_SETUP !== "true") {
-          throw new APIError("Owner provisioning is disabled until the deployment setup window is enabled.", 503);
-        }
+        // Payload's first-user screen is the bootstrap path. The first
+        // account becomes the approved owner; later public registrations are
+        // forced to pending editors below.
         if (existing.docs.length === 0) return { ...data, role: "owner", status: "approved", bootstrapClaim: "singleton" };
         // Public registration is always a pending editor. An owner-created
         // account may be an approved admin; admins can create only pending
