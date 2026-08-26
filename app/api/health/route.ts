@@ -1,10 +1,10 @@
-import config from "@payload-config";
 import { getPayload } from "payload";
 
 export const dynamic = "force-dynamic";
 
 async function checkDatabase() {
   try {
+    const { default: config } = await import("@payload-config");
     const payload = await getPayload({ config });
     await payload.find({ collection: "articles", limit: 1, pagination: false, overrideAccess: true });
     return true;
