@@ -35,9 +35,12 @@ export const Users: CollectionConfig = {
         if (existing.docs.length === 0 && process.env.NODE_ENV === "production" && process.env.ALLOW_FIRST_USER_SETUP !== "true") {
           throw new APIError("Owner provisioning is disabled until the deployment setup window is enabled.", 503);
         }
-        return existing.docs.length === 0
-          ? { ...data, role: "owner", status: "approved", bootstrapClaim: "singleton" }
-          : { ...data, role: "editor", status: "pending" };
+        if (existing.docs.length === 0) return { ...data, role: "owner", status: "approved", bootstrapClaim: "singleton" };
+        // Public registration is always a pending editor. An owner-created
+        // account may be an approved admin; admins can create only pending
+        // editors so they cannot grant elevated privileges to another user.
+        if (!req.user || !isApprovedUser(req.user) || req.user.role !== "owner") return { ...data, role: "editor", status: "pending" };
+        return { ...data, role: data.role === "admin" ? "admin" : "editor", status: data.status === "approved" ? "approved" : "pending" };
       }
 
       // Normalize legacy owners on their next write without changing other legacy rows.
@@ -47,6 +50,9 @@ export const Users: CollectionConfig = {
 
       const accountTransition = hasAccountTransition(originalDoc, { role: nextRole, status: nextStatus });
       const isLegacyOwnerMigration = (req.context as Record<string, unknown> | undefined)?.legacyOwnerMigration === true;
+      if (req.user?.role === "admin" && isSelf({ req, id: originalDoc?.id } as AccessArgs) && data.status !== undefined && data.status !== originalDoc?.status) {
+        throw new APIError("Admins cannot change their own approval status.", 403);
+      }
       if (accountTransition && process.env.MFA_REQUIRED === "true" && !isLegacyOwnerMigration && (!req.user || !hasRecentMfa(req as unknown as Request, String(req.user.id)))) {
         throw new APIError("Recent MFA verification is required for account governance changes.", 403);
       }
@@ -107,7 +113,7 @@ export const Users: CollectionConfig = {
     },
     { name: "mfaEnabled", type: "checkbox", defaultValue: false, access: { read: ({ req }) => isApprovedOwner(req.user), update: () => false } },
     { name: "mfaSecretEncrypted", type: "text", hidden: true, access: { read: () => false, update: () => false } },
-    { name: "status", type: "select", defaultValue: "pending", options: [{ label: "Pending", value: "pending" }, { label: "Approved", value: "approved" }, { label: "Suspended", value: "suspended" }], access: { update: ({ req }) => canManageRoles(req.user) } },
+    { name: "status", type: "select", defaultValue: "pending", options: [{ label: "Pending", value: "pending" }, { label: "Approved", value: "approved" }, { label: "Suspended", value: "suspended" }], access: { update: ({ req }) => canManageUsers(req.user) } },
     { name: "role", type: "select", defaultValue: "editor", options: [{ label: "Editor", value: "editor" }, { label: "Admin", value: "admin" }, { label: "Owner", value: "owner" }], access: { update: ({ req }) => canManageRoles(req.user) } },
   ],
 };

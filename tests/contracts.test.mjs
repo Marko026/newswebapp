@@ -86,6 +86,18 @@ test("public registration creates pending editors and login blocks them", async 
   assert.match(users, /role: "owner"/);
 });
 
+test("owner and admin access model keeps approval separate from role governance", async () => {
+  const users = await source("collections/Users.ts");
+  const permissions = await source("lib/auth/permissions.ts");
+  assert.match(users, /req\.user\.role !== "owner"/);
+  assert.match(users, /data\.role === "admin"/);
+  assert.match(users, /data\.status === "approved"/);
+  assert.match(users, /name: "status"[\s\S]*update: \(\{ req \}\) => canManageUsers\(req\.user\)/u);
+  assert.match(users, /name: "role"[\s\S]*update: \(\{ req \}\) => canManageRoles\(req\.user\)/u);
+  assert.match(permissions, /canManageUsers[\s\S]*isOwnerUser\(user\) \|\| isAdminUser\(user\)/u);
+  assert.match(permissions, /canManageRoles[\s\S]*isOwnerUser\(user\)/u);
+});
+
 test("staff collection permissions keep destructive operations owner-only", async () => {
   const guardedCollections = ["Articles.ts", "Categories.ts", "Media.ts", "Topics.ts", "Authors.ts", "NewsletterSubscribers.ts", "ContactMessages.ts"];
   for (const file of guardedCollections) {

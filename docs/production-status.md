@@ -18,6 +18,9 @@ media storage.
 - The production server starts only with a valid production environment.
 - `/api/health` is a liveness endpoint; `/api/health?ready=1` checks database and
   Redis readiness without exposing connection details.
+- The intended initial access model is one approved owner plus one approved
+  admin; both may review pending access requests, while role governance remains
+  owner-only.
 
 ## Known blockers
 
