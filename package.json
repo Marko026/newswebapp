@@ -1,0 +1,46 @@
+{
+  "name": "news-website",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22 <26",
+    "npm": ">=10 <12"
+  },
+  "packageManager": "npm@11.6.2",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "test": "node --test tests/**/*.test.mjs",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "payload:types": "payload generate:types",
+    "payload:importmap": "payload generate:importmap"
+  },
+  "dependencies": {
+    "@payloadcms/db-postgres": "^3.87.0",
+    "@payloadcms/db-sqlite": "^3.87.0",
+    "@payloadcms/next": "^3.87.0",
+    "@payloadcms/richtext-lexical": "^3.87.0",
+    "@payloadcms/storage-s3": "^3.87.0",
+    "next": "16.3.0",
+    "payload": "^3.87.0",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "sharp": "^0.35.3"
+  },
+  "devDependencies": {
+    "@types/node": "22.15.30",
+    "@types/react": "19.1.2",
+    "@types/react-dom": "19.1.2",
+    "eslint": "9.27.0",
+    "eslint-config-next": "16.3.0",
+    "typescript": "5.8.3"
+  },
+  "overrides": {
+    "undici": "7.29.0",
+    "dompurify": "3.4.13",
+    "esbuild": "0.28.1"
+  }
+}
