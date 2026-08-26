@@ -16,8 +16,8 @@ media storage.
 - `npm test` passes: 16 contract tests.
 - `npm run build` passes on Next.js 16.3.0.
 - The production server starts only with a valid production environment.
-- `/api/health` is a liveness endpoint and does not yet prove database or Redis
-  readiness.
+- `/api/health` is a liveness endpoint; `/api/health?ready=1` checks database and
+  Redis readiness without exposing connection details.
 
 ## Known blockers
 
@@ -30,7 +30,7 @@ media storage.
    article rendering, forms, mobile layouts, and Arabic RTL behavior.
 4. Cloudflare/WAF, backup/restore evidence, immutable audit export, monitoring,
    and a tested rollback path are not yet in place.
-5. The repository needs its first release commit and a staging branch/tag.
+5. The repository needs a staging tag and a remote release workflow.
 
 ## Staging acceptance gate
 

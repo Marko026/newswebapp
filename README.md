@@ -50,4 +50,8 @@ Za production server obavezno postavi `PAYLOAD_SECRET` (najmanje 32 karaktera i 
 
 CI workflow u `.github/workflows/ci.yml` pokrece lint, typecheck, contract testove i production build.
 
+`GET /api/health` je liveness provera servera. `GET /api/health?ready=1` je
+readiness provera i vraća `200` samo kada su Payload baza i Upstash Redis
+dostupni; u suprotnom vraća `503` bez detalja o infrastrukturi.
+
 Objavljeni frontend je dizajniran da ostane čitljiv i kada CMS nije dostupan; CMS i public rendering su odvojeni route boundary-jem.
