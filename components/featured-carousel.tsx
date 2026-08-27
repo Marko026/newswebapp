@@ -45,6 +45,10 @@ export function FeaturedCarousel({ stories, locale }: { stories: Story[]; locale
     setActive(index);
   }
 
+  function togglePlayback() {
+    setPausedByUser((value) => !value);
+  }
+
   function handlePickerKeyDown(event: React.KeyboardEvent<HTMLButtonElement>, index: number) {
     if (event.key === "ArrowRight") { event.preventDefault(); selectStory(locale === "ar" ? (index - 1 + stories.length) % stories.length : (index + 1) % stories.length); }
     if (event.key === "ArrowLeft") { event.preventDefault(); selectStory(locale === "ar" ? (index + 1) % stories.length : (index - 1 + stories.length) % stories.length); }
@@ -118,6 +122,11 @@ export function FeaturedCarousel({ stories, locale }: { stories: Story[]; locale
             <div className="hero-progress" role="group" aria-label={labels.choose}>
               {stories.map((item, itemIndex) => <button key={item.slug} type="button" className={`hero-progress-step${itemIndex === active ? " is-active" : ""}`} aria-pressed={itemIndex === active} aria-label={`${labels.slide} ${itemIndex + 1}`} onPointerDown={(event) => event.stopPropagation()} onClick={() => selectStory(itemIndex)} onKeyDown={(event) => handlePickerKeyDown(event, itemIndex)} />)}
               <span className="hero-count">0{active + 1} / 0{stories.length}</span>
+            </div>
+            <div className="hero-navigation-actions">
+              <button className="story-nav-button" type="button" onPointerDown={(event) => event.stopPropagation()} onClick={() => move(locale === "ar" ? 1 : -1)} aria-label={labels.previous}>←</button>
+              <button className="story-nav-button" type="button" onPointerDown={(event) => event.stopPropagation()} onClick={() => move(locale === "ar" ? -1 : 1)} aria-label={labels.next}>→</button>
+              <button className="story-nav-button story-nav-pause" type="button" onPointerDown={(event) => event.stopPropagation()} onClick={togglePlayback} aria-pressed={pausedByUser} aria-label={pausedByUser ? labels.play : labels.pause}>{pausedByUser ? "▶" : "Ⅱ"}</button>
             </div>
           </div>}
         </div>

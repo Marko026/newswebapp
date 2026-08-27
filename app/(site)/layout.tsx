@@ -6,6 +6,7 @@ import { defaultLocale, isLocale, localeConfig, type Locale } from "@/lib/i18n";
 import { siteMetadata } from "@/lib/seo";
 import "./tokens.css";
 import "./globals.css";
+import "./editorial.css";
 
 export const metadata: Metadata = siteMetadata();
 

@@ -34,7 +34,7 @@ export function RegisterForm({ locale }: { locale: "ar" | "en" }) {
   }
 
   const isLoading = status === "loading";
-  return <form className="access-request-form" onSubmit={submit} aria-busy={isLoading}>
+  return <form className="access-request-form" onSubmit={submit} aria-busy={isLoading} data-state={status}>
     <div className="form-intro-row">
       <span className="form-step">01 / 03</span>
       <p>{arabic ? "بياناتك الأساسية" : "Your details"}</p>

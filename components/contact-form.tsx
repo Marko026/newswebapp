@@ -32,7 +32,7 @@ export function ContactForm({ locale }: { locale: "ar" | "en" }) {
   }
 
   return (
-    <form className="contact-form" onSubmit={submit} aria-busy={status === "loading"}>
+    <form className="contact-form" onSubmit={submit} aria-busy={status === "loading"} data-state={status}>
       <Label>{isAr ? "الاسم" : "Name"}<Input name="name" required maxLength={120} autoComplete="name" /></Label>
       <Label>{isAr ? "البريد الإلكتروني" : "Email"}<Input name="email" type="email" required maxLength={254} autoComplete="email" /></Label>
       <Label>{isAr ? "رسالتك" : "Your message"}<Textarea name="message" required maxLength={5000} /></Label>

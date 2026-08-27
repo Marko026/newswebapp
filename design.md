@@ -9,7 +9,7 @@ Editorial · newsprint · archival
 
 ## Macrostructure family
 
-- Marketing / public home: Ecosystem Index — featured story, discovery rail, latest index
+- Marketing / public home: Nile Ledger — featured story, story index, latest stream
 - Content pages: Long Document — reading-led article and history layouts
 - Utility pages: Index-First — direct navigation and task-focused forms
 
@@ -45,9 +45,39 @@ fallback.
 The wordmark, paper/ink hierarchy, vermilion accent, typography pairing, focus
 ring, RTL/LTR support, and content-first spacing rhythm.
 
+## Visual thesis
+
+Nile Chronicle is a living front page: every story is presented as a trace through
+time, with editorial rules, paper surfaces, and restrained vermilion signals making
+the publication feel precise rather than promotional.
+
+Principles:
+
+- discovery begins with one clear lead, then opens into an index;
+- real media carries meaning, while fallback art is visibly illustrative;
+- pages vary in rhythm but share the same paper, ink, type, and rule language;
+- Arabic and English are parallel editorial systems, not translated afterthoughts.
+
+## Implementation mapping
+
+- Tokens: `app/(site)/tokens.css`
+- Composition layer: `app/(site)/editorial.css`
+- Shared shell: `components/site-header.tsx`, `components/site-footer.tsx`
+- Discovery: `app/(site)/[locale]/page.tsx`, `components/featured-carousel.tsx`, `components/article-card.tsx`
+- Reading: `app/(site)/[locale]/news/[slug]/page.tsx`, `app/(site)/[locale]/history/[slug]/page.tsx`
+- Utilities: search, contact, newsletter, register, loading, error, and not-found routes.
+
 ## Hallmark implementation note
 
-The homepage uses the `Ecosystem Index` macrostructure so discovery is the main
+The homepage uses the `Nile Ledger` macrostructure so discovery is the main
 job of the page. It replaces the previous oversized `Long Document` hero rhythm
 with a front-page lead and an explicit story index. No routes, CMS logic, or
 production files were deleted.
+
+## Exports
+
+- CSS tokens: `app/(site)/tokens.css`
+- Tailwind semantic theme: `tailwind.config.js`
+- DTCG/shadcn mapping: the semantic `--color-*`, `--font-*`, `--space-*`,
+  `--text-*`, `--ease-*`, `--dur-*`, `--rule-*`, and `--radius-*` tokens above
+  are the portable source for future exports.

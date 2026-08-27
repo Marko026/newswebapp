@@ -1,4 +1,4 @@
-/* Hallmark · macrostructure: Ecosystem Index · tone: newsprint editorial · anchor hue: vermilion */
+/* Hallmark · macrostructure: Nile Ledger · tone: newsprint editorial · anchor hue: vermilion */
 :root {
   --color-paper: oklch(96% 0.012 92);
   --color-paper-raised: oklch(91% 0.018 92);
@@ -13,11 +13,15 @@
   --color-controls-ink: oklch(94% 0.018 92);
   --color-controls-line: oklch(45% 0.04 140);
   --color-focus: oklch(48% 0.14 245);
+  --color-error: oklch(48% 0.14 28);
+  --color-success: oklch(43% 0.11 145);
+  --color-warning: oklch(55% 0.12 82);
   --color-art-dark: oklch(30% 0.045 150);
   --color-art-mid: oklch(51% 0.05 122);
   --color-art-light: oklch(75% 0.04 92);
   --font-display: Georgia, "Times New Roman", serif;
   --font-body: Arial, "Noto Sans Arabic", sans-serif;
+  --font-arabic: "Noto Sans Arabic", Tahoma, Arial, sans-serif;
   --font-mono: "Courier New", monospace;
   --space-1: 4px;
   --space-2: 8px;
@@ -39,8 +43,21 @@
   --ease-in-out: cubic-bezier(.65, 0, .35, 1);
   --dur-fast: 150ms;
   --dur-base: 280ms;
+  --dur-normal: 360ms;
   --rule-thin: 1px solid var(--color-line);
   --rule-strong: 2px solid var(--color-ink);
+
+  /* Compatibility aliases for the legacy public CSS layer. */
+  --paper: var(--color-paper);
+  --paper-2: var(--color-paper-raised);
+  --ink: var(--color-ink);
+  --muted: var(--color-muted);
+  --line: var(--color-line);
+  --accent: var(--color-accent);
+  --accent-2: var(--color-art-mid);
+  --shadow: 0 20px 60px color-mix(in oklch, var(--color-ink) 12%, transparent);
+  --radius: 0px;
+  --max: 1240px;
 }
 
 html[data-theme="dark"] {
@@ -57,7 +74,19 @@ html[data-theme="dark"] {
   --color-controls-ink: oklch(92% 0.028 88);
   --color-controls-line: oklch(42% 0.045 145);
   --color-focus: oklch(75% 0.11 245);
+  --color-error: oklch(72% 0.14 28);
+  --color-success: oklch(69% 0.12 145);
+  --color-warning: oklch(78% 0.12 82);
   --color-art-dark: oklch(22% 0.04 145);
   --color-art-mid: oklch(35% 0.05 115);
   --color-art-light: oklch(51% 0.055 92);
+
+  --paper: var(--color-paper);
+  --paper-2: var(--color-paper-raised);
+  --ink: var(--color-ink);
+  --muted: var(--color-muted);
+  --line: var(--color-line);
+  --accent: var(--color-accent);
+  --accent-2: var(--color-art-mid);
+  --shadow: 0 20px 60px color-mix(in oklch, var(--color-ink) 22%, transparent);
 }

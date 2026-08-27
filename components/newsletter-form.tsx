@@ -31,7 +31,7 @@ export function NewsletterForm({ locale }: { locale: "ar" | "en" }) {
   }
 
   return (
-    <form className="newsletter-form" onSubmit={submit} aria-busy={status === "loading"}>
+    <form className="newsletter-form" onSubmit={submit} aria-busy={status === "loading"} data-state={status}>
       <Label htmlFor={emailId}>{isAr ? "بريدك الإلكتروني" : "Your email"}</Label>
       <div>
         <Input id={emailId} name="email" type="email" required maxLength={254} autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder={isAr ? "you@example.com" : "you@example.com"} dir="ltr" />

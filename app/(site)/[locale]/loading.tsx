@@ -1,1 +1,1 @@
-export default function Loading() { return <main className="page-wrap page-loading"><span className="loading-line" /><span className="loading-line loading-line-short" /></main>; }
+export default function Loading() { return <main className="page-wrap page-loading" aria-busy="true" aria-label="Loading"><span className="eyebrow">NILE CHRONICLE</span><span className="loading-line" /><span className="loading-line loading-line-short" /><span className="loading-line loading-line-copy" /></main>; }
